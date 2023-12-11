@@ -1,5 +1,11 @@
 const express = require("express")
 const router = new express.Router();
+const ExpressError = require("./expressError")
+
+app.use(function(req, res, next) {
+    const err = new ExpressError("Not Found", 404);
+    return next(err);
+  });
 
 router.get("/", async function (req, res, next) {
 try { const results = await db.query(`SELECT * from companies`)
