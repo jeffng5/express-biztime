@@ -13,12 +13,14 @@ catch (err){
 router.get("/:code", async function (req, res, next) {
     const { code } = req.body
     try { const results = await db.query(`SELECT code, name, description from companies WHERE code=$1`, [code])
+    if (results.rows.length === 0) {
+        throw new ExpressError("No such message", 404);
     return res.json(results.rows);
-    }
+    }}
     catch (err){ console.log('error 404')
         return next(err)
-    }
-    })
+    }}
+    )
 
 router.post("/", async function (req, res, next) {
     const { code, name, description } = req.body
@@ -34,6 +36,8 @@ router.post("/", async function (req, res, next) {
 router.put("/:code", async function (req, res, next) {
     const { code, name, description } = req.body
     try { const results = await db.query(`UPDATE companies SET name=$1, description=$2 WHERE code = $3 RETURNING *`, [name, description, code])
+    if (results.rows.length === 0) {
+        throw new ExpressError("No such message", 404)};
     return res.json(results.rows);
     }
     catch (err){ console.log('error 404')
@@ -42,9 +46,11 @@ router.put("/:code", async function (req, res, next) {
     })
 
 
-router.post("/:code", async function (req, res, next) {
+router.delete("/:code", async function (req, res, next) {
     const { code } = req.body
     try { const results = await db.query(`DELETE from companies WHERE id = $1 RETURNING *`, [code])
+    if (results.rows.length === 0) {
+        throw new ExpressError("No such message", 404)};
     return res.json(results.rows);
     }
     catch (err){ console.log('error 404')

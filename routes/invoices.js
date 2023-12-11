@@ -14,7 +14,10 @@ catch (err){
 router.get("/:id", async function(req,res,next){
     const { id } = req.params
     try {const results = await db.query(`SELECT * FROM invoices WHERE id=$1`, [id])
+    if (results.rows.length === 0) {
+        throw new ExpressError("No such message", 404)}
     return res.json(results.rows);
+    
 }
     catch(err) { console.log('error 404')
         return next(err)
@@ -39,6 +42,8 @@ router.put("/:id", async function(req,res,next){
     const { id } = req.params
     try {const results = await db.query(`UPDATE invoices SET amt=$1 WHERE code = $2 RETURNING *`,
     [amt, id])
+    if (results.rows.length === 0) {
+        throw new ExpressError("No such message", 404)};
     return res.json(results.rows);
 }
 catch (err){ console.log('error 404')
@@ -50,6 +55,8 @@ catch (err){ console.log('error 404')
 router.delete("/:id", async function(req,res,next){
     const {id} = req.params
     try {const results = await db.query(`DELETE from invoices WHERE id = $1 RETURNING *`, [id] )
+    if (results.rows.length === 0) {
+        throw new ExpressError("No such message", 404)};
     return res.json(results.rows);
     }
     catch(err){console.log('error 404')
