@@ -6,7 +6,8 @@ DROP TABLE IF EXISTS companies;
 CREATE TABLE companies (
     code text PRIMARY KEY,
     name text NOT NULL UNIQUE,
-    description text
+    description text,
+  
 );
 
 CREATE TABLE invoices (
@@ -18,6 +19,15 @@ CREATE TABLE invoices (
     paid_date date,
     CONSTRAINT invoices_amt_check CHECK ((amt > (0)::double precision))
 );
+CREATE TABLE industry(
+ code text PRIMARY KEY,
+ industry text NOT NULL UNIQUE
+)
+
+CREATE TABLE typeOfCompany(
+  industry text NOT NULL UNIQUE,
+  company text NOT NULL UNIQUE
+)
 
 INSERT INTO companies
   VALUES ('apple', 'Apple Computer', 'Maker of OSX.'),
@@ -28,3 +38,11 @@ INSERT INTO invoices (comp_Code, amt, paid, paid_date)
          ('apple', 200, false, null),
          ('apple', 300, true, '2018-01-01'),
          ('ibm', 400, false, null);
+
+INSERT INTO typeOfCompany( industry, company)
+  VALUES('tech', 'apple'),
+        ('tech', 'ibm'),
+        ('IT', 'apple'),
+        ('IT', 'ibm'),
+        ('telecom', 'apple'),
+        ('AI', 'ibm');

@@ -2,20 +2,23 @@
 
 
 const express = require("express");
-const companies = require("../companies")
-const invoices = require("../invoices")
+const ExpressError = require("express-error");
+const companiesRoutes = require("./routes/companies");
+const invoicesRoutes = require("./routes/invoices");
+
 const app = express();
-const ExpressError = require("./expressError")
+const router = express.Router();
 
 app.use(express.json());
-
+app.use("/companies", companiesRoutes);
+app.use("/invoices", invoicesRoutes);
 
 /** 404 handler */
 
-app.use(function(req, res, next) {
-  const err = new ExpressError("Not Found", 404);
-  return next(err);
-});
+// app.use(function(req, res, next) {
+//   const err = new ExpressError("Not Found", 404);
+//   return next(err);
+// });
 
 /** general error handler */
 
@@ -29,8 +32,7 @@ app.use((err, req, res, next) => {
 });
 
 
-app.use("/companies", companies)
-app.use("/invoices", invoices)
+
 
 
 
