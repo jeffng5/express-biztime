@@ -3,6 +3,7 @@
 
 const express = require("express");
 const companies = require("../companies")
+const invoices = require("../invoices")
 const app = express();
 const ExpressError = require("./expressError")
 
@@ -29,7 +30,7 @@ app.use((err, req, res, next) => {
 
 
 app.use("/companies", companies)
-
+app.use("/invoices", invoices)
 
 
 
