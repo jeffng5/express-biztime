@@ -2,7 +2,7 @@
 
 
 const express = require("express");
-
+const companies = require("../companies")
 const app = express();
 const ExpressError = require("./expressError")
 
@@ -26,6 +26,14 @@ app.use((err, req, res, next) => {
     message: err.message
   });
 });
+
+
+app.use("/companies", companies)
+
+
+
+
+
 
 
 module.exports = app;
