@@ -64,4 +64,29 @@ router.delete("/:id", async function(req,res,next){
 }
 })
 
+router.put("/:id", async function(req,res,next){
+    const { amt, paid, paid_date } = req.body
+    const { id } = req.params
+    try {const results = await db.query(`UPDATE invoices SET amt=$1 paid=$3 WHERE code = $2 RETURNING *`,
+    [amt, id, paid])
+    if (results.rows.length === 0) {
+        throw new ExpressError("No such message", 404)}
+    
+    if (paid_date.length === 0){
+        paid_date == CURRENT_DATE
+    }
+    if (paid < 0) {
+        paid_date == null
+    }
+    else {
+        paid_date == paid_date
+    }
+    
+    try {const results2 = await db.query(`SELECT * from invoices`)
+    return res.json(results2.rows);}
+    catch (err){ console.log('error 404')
+        return next(err)
+}} catch (err){
+    return next(err)}} )
+
 module.exports = router
